@@ -1,1 +1,1 @@
-Show
+request.form['seeking_talent']
