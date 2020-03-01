@@ -240,7 +240,7 @@ class ArtistForm(Form):
         ],
     )
     seeking_description = StringField(
-        'seeking_description', validators=[DataRequired()]
+        'seeking_description'
     )
 
 # TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM

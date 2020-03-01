@@ -6,6 +6,7 @@
 		<h1 class="monospace">
 			{{ venue.name }}
 		</h1>
+		</form>
 		<p class="subtitle">
 			ID: {{ venue.id }}
 		</p>
@@ -24,10 +25,12 @@
 			<i class="fas fa-phone-alt"></i> {% if venue.phone %}{{ venue.phone }}{% else %}No Phone{% endif %}
 		</p>
 		<p>
-			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}" target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}"
+				target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
-			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}" target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}"
+				target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
 		</p>
 		{% if venue.seeking_talent %}
 		<div class="seeking">
@@ -36,7 +39,7 @@
 				<i class="fas fa-quote-left"></i> {{ venue.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
-		{% else %}	
+		{% else %}
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking talent
 		</p>
@@ -47,33 +50,52 @@
 	</div>
 </div>
 <section>
-	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ upcoming_shows_count }} Upcoming
+		{% if upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.upcoming_shows %}
+		{%for show in upcoming_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ upcoming_links[show.id] }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ upcoming_names[show.id] }}</a></h5>
+				<h6>{{ upcoming_dates[show.id] }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
 </section>
 <section>
-	<h2 class="monospace">{{ venue.past_shows_count }} Past {% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ past_shows_count }} Past
+		{% if past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.past_shows %}
+		{%for show in past_shows %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ past_links[show.id] }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ past_names[show.id] }}</a></h5>
+				<h6>{{ past_dates[show.id] }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
 </section>
+<div class="col-sm-6">
+	<a href="/venues"><button class="delete-venue btn btn-primary btn-lg" data-id="{{venue.id}}">Delete
+			Venue</button></a>
+	<a href="/venues/{{venue.id}}/edit"><button class="edit-artist btn btn-primary btn-lg" data-id="{{venue.id}}">Edit
+			Venue</button></a>
+</div>
+<script>
+	const buttons = document.querySelectorAll('.delete-venue')
+	for (let i = 0; i < buttons.length; i++) {
+		const button = buttons[i];
+		button.onclick = function (e) {
+			const venueId = e.target.dataset['id'];
+			fetch('/venues/' + venueId, {
+				method: 'DELETE'
+			});
+		}
+	}
 
+</script>
 {% endblock %}
-
